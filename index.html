@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Study Time Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="main-wrapper">
+
+    <h1 class="title">📊 Study Time Analyzer Dashboard</h1>
+
+    <div class="form-section">
+        <form action="/add" method="POST">
+            <input type="text" name="subject" placeholder="Enter Subject" required>
+            <input type="number" step="0.1" name="hours" placeholder="Enter Hours" required>
+            <button type="submit">Add Study Data</button>
+        </form>
+    </div>
+
+    {% if subjects %}
+    <div class="report-section">
+
+        <h2>📚 Study Report</h2>
+
+        <div class="subjects-list">
+            {% for subject, hours in subjects.items() %}
+                <div class="subject-card">
+                    <div class="subject-header">
+                        <span>{{ subject }}</span>
+                        <span>{{ hours }} hrs ({{ percentages[subject] }}%)</span>
+                    </div>
+
+                    <div class="progress-bar">
+                        <div class="progress-fill"
+                             style="width: {{ percentages[subject] }}%;">
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="analysis-boxes">
+
+            <div class="box strong-box">
+                🔥 <strong>Strongest Subject</strong>
+                <p>{{ strongest }}</p>
+            </div>
+
+            <div class="box weak-box">
+                ⚠ <strong>Weakest Subject</strong>
+                <p>{{ weakest }}</p>
+            </div>
+
+        </div>
+
+        <div class="suggestion-box">
+            📌 {{ suggestion }}
+        </div>
+
+        <div class="motivation-box">
+            💡 {{ motivation }}
+        </div>
+
+        {% if graph %}
+        <div class="graph-section">
+            <h2>📈 Study Time Analysis</h2>
+            <img src="{{ url_for('static', filename=graph) }}" alt="Study Graph">
+        </div>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
